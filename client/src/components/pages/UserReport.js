@@ -2,7 +2,6 @@ import React from "react";
 import Navigation from "../ui/Navigation";
 import caretDownIcon from "../../icons/caret-down.svg";
 import caretRightIcon from "../../icons/caret-right.svg";
-import UserQuestions from "../ui/UserQuestions";
 // import userQuestions from "../../data/user-questions";
 import axios from "axios";
 // import actions from "../../store/actions";
@@ -24,20 +23,28 @@ class UserReport extends React.Component {
       };
    }
 
+   /* user id, display one name and with user id match all questions and answers  */
+
    componentDidMount() {
       axios
-         .get(
-            "https://raw.githubusercontent.com/kcapasso-mcdaniel/first-react-app/master/src/data/mock-data-json/user-questions.json"
-         )
+         .get("/api/v1/users")
          .then((res) => {
             // handle success
             console.log(res);
             const userQuestions = res.data;
             this.setState({ userQuestions: userQuestions });
-            // props.dispatch({
-            //    type: actions.STORE_USER_QUESTIONS,
-            //    payload: res.data,
-            // });
+         })
+         .catch((error) => {
+            // handle error
+            console.log(error);
+         });
+      axios
+         .get("/api/v1/user-questions")
+         .then((res) => {
+            // handle success
+            console.log(res);
+            const userQuestions = res.data;
+            this.setState({ userQuestions: userQuestions });
          })
          .catch((error) => {
             // handle error
@@ -56,6 +63,7 @@ class UserReport extends React.Component {
    }
 
    render() {
+      console.log(this.state.userQuestions);
       return (
          <div className="container">
             <div className="row">
@@ -96,17 +104,13 @@ class UserReport extends React.Component {
 
                         {this.state.showUserReport && (
                            <form className="mt-2">
-                              {this.state.userQuestions.map((user) => {
+                              {this.state.userQuestions.map((user, i) => {
                                  return (
-                                    <div key={user}>
-                                       <h3>{user.firstName} </h3>
-                                       <h3>{user.lastName}</h3>
-                                       <ul>
-                                          <UserQuestions
-                                             questions={user.questions}
-                                             key={user.id}
-                                          />
-                                       </ul>
+                                    <div key={user.user_id + i}>
+                                       <h3>{user.first_name} </h3>
+                                       <h3>{user.last_name} </h3>
+                                       <h3>{user.question_title} </h3>
+                                       <h3>{user.user_answer_text}</h3>
                                     </div>
                                  );
                               })}

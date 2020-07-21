@@ -15,9 +15,6 @@ module.exports = function returnUserQuestions() {
              INNER JOIN 
                 questions ON questions.id = xref_user_questions.question_id
              INNER JOIN 
-                answers ON answers.id = xref_user_questions.user_answer_id
-    WHERE 
-       users.id = ? 
-       
+                answers ON answers.id = xref_user_questions.user_answer_id   
        `;
 };

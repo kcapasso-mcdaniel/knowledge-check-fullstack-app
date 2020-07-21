@@ -5,7 +5,7 @@ const router = express.Router();
 const db = require("../../db");
 
 // change file paths
-const selectUserAssignedQuestions = require("../../queries/selectUserAssignedQuestions");
+const returnUserQuestions = require("../../queries/returnUserQuestions");
 
 // @route  GET api/v1/users
 // @desc  GET a valid user via email and password
@@ -14,8 +14,8 @@ const selectUserAssignedQuestions = require("../../queries/selectUserAssignedQue
 // can run a query
 router.get("/", (req, res) => {
    console.log(req.query);
-   const userId = req.query.userId;
-   db.query(selectUserAssignedQuestions(), [userId]) // use our database to call the query method which opens connection & pass connection
+   // const userId = req.query.userId;
+   db.query(returnUserQuestions()) // use our database to call the query method which opens connection & pass connection
       .then((dbRes) => {
          // then get something successful can console.log user questions
          console.log(dbRes);

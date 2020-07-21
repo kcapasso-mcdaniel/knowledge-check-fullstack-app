@@ -15,21 +15,6 @@ class UserQuestions extends React.Component {
                   return <p key={question.id}>{question.title} </p>;
                })}
             </h3>
-
-            {/* <div className="custom-control custom-radio mt-4" key="{answer.id}">
-               <input
-                  type="radio"
-                  name="{props.id}"
-                  id="{answer.id}"
-                  className="custom-control-input"
-               />
-               <label
-                  className="custom-control-label mb-4"
-                  htmlFor="{answer.id}"
-               >
-                  "answer.text"
-               </label>
-            </div> */}
          </div>
       );
    }
