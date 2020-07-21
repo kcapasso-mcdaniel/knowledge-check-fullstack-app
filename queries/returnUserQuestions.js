@@ -1,4 +1,4 @@
-module.exports = function returnUserQuestions(user_id) {
+module.exports = function returnUserQuestions(userId) {
    return `
    SELECT 
          users.id AS user_id,
@@ -17,5 +17,5 @@ module.exports = function returnUserQuestions(user_id) {
              INNER JOIN 
                 answers ON answers.id = xref_user_questions.user_answer_id
     WHERE 
-       users.id = '${user_id}'`;
+       users.id = '${userId}'`;
 };

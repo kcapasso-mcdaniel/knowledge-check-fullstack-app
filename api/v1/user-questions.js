@@ -13,7 +13,9 @@ const returnUserQuestions = require("../../queries/returnUserQuestions");
 
 // can run a query
 router.get("/", (req, res) => {
-   db.query(returnUserQuestions("61d7d1be-4ada-4c1a-81c0-c6b82f45132e")) // use our database to call the query method which opens connection & pass connection
+   console.log(req.query);
+   const userId = req.query.userId;
+   db.query(returnUserQuestions(userId)) // use our database to call the query method which opens connection & pass connection
       .then((dbRes) => {
          // then get something successful can console.log user questions
          console.log(dbRes);
