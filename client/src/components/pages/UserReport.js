@@ -19,32 +19,46 @@ class UserReport extends React.Component {
          showUserReport: false,
          hideRightCaret: true,
          hideDownCaret: false,
-         userQuestions: [],
+         userResults: [],
       };
    }
 
-   /* user id, display one name and with user id match all questions and answers  */
-
    componentDidMount() {
-      axios
-         .get("/api/v1/users")
-         .then((res) => {
-            // handle success
-            console.log(res);
-            const userQuestions = res.data;
-            this.setState({ userQuestions: userQuestions });
-         })
-         .catch((error) => {
-            // handle error
-            console.log(error);
-         });
+      // will equal res.json
+
       axios
          .get("/api/v1/user-questions")
-         .then((res) => {
+         .then((res1) => {
             // handle success
-            console.log(res);
-            const userQuestions = res.data;
-            this.setState({ userQuestions: userQuestions });
+            console.log(res1);
+            let userQuestions = res1.data;
+
+            axios
+               .get("/api/v1/all-users")
+               .then((res) => {
+                  // handle success
+                  const users = res.data.map((user) => {
+                     return {
+                        id: `${user.id}`,
+                        name: `${user.first_name} ${user.last_name}`,
+                        questions: userQuestions
+                           .filter((item) => item.user_id === user.id)
+                           .map((result) => {
+                              console.log("NO", result);
+                              return {
+                                 question: result.question_title,
+                                 answer: result.user_answer_text,
+                              };
+                           }),
+                     };
+                  });
+                  console.log(users);
+                  this.setState({ userResults: users });
+               })
+               .catch((error) => {
+                  // handle error
+                  console.log(error);
+               });
          })
          .catch((error) => {
             // handle error
@@ -63,7 +77,6 @@ class UserReport extends React.Component {
    }
 
    render() {
-      console.log(this.state.userQuestions);
       return (
          <div className="container">
             <div className="row">
@@ -104,13 +117,26 @@ class UserReport extends React.Component {
 
                         {this.state.showUserReport && (
                            <form className="mt-2">
-                              {this.state.userQuestions.map((user, i) => {
+                              {this.state.userResults.map((user, i) => {
                                  return (
-                                    <div key={user.user_id + i}>
-                                       <h3>{user.first_name} </h3>
-                                       <h3>{user.last_name} </h3>
-                                       <h3>{user.question_title} </h3>
-                                       <h3>{user.user_answer_text}</h3>
+                                    <div key={user.id + i}>
+                                       <h3>{user.name} </h3>
+                                       {user.questions.map((question, i) => {
+                                          return (
+                                             <div key={question.question + i}>
+                                                <h3>{question.question} </h3>
+                                                <h3>{question.answer}</h3>
+                                             </div>
+                                          );
+                                       })}
+
+                                       {/* user id, display one name and with user id match all questions and answers  */}
+                                       {/* <ul>
+                                          <UserQuestions
+                                             questions={user.questions}
+                                             key={user.id}
+                                          />
+                                       </ul> */}
                                     </div>
                                  );
                               })}

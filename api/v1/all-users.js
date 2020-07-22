@@ -5,7 +5,8 @@ const router = express.Router();
 const db = require("../../db");
 
 // change file paths
-const returnUserQuestions = require("../../queries/returnUserQuestions");
+const selectUsers = require("../../queries/selectUsers");
+const { toJson, toSafelyParseJson } = require("../../utils/helpers");
 
 // @route  GET api/v1/users
 // @desc  GET a valid user via email and password
@@ -14,12 +15,13 @@ const returnUserQuestions = require("../../queries/returnUserQuestions");
 // can run a query
 router.get("/", (req, res) => {
    console.log(req.query);
-   // const userId = req.query.userId;
-   db.query(returnUserQuestions()) // use our database to call the query method which opens connection & pass connection
+   db.query(selectUsers()) // use our database to call the query method which opens connection & pass connection
       .then((dbRes) => {
-         // then get something successful can console.log user questions
-         console.log(dbRes);
-         res.json(dbRes);
+         // then get something successful can console.log user
+         // returns an array of object that contains the information about the user
+         const user = toSafelyParseJson(toJson(dbRes));
+         console.log(user);
+         res.json(user);
       })
       .catch((err) => {
          // catch if there is a database error and throw error message
