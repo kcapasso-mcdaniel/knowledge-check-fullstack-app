@@ -1,4 +1,4 @@
-module.exports = function returnUserQuestions() {
+module.exports = function returnUserReport() {
    return `
    SELECT 
          users.id AS user_id,

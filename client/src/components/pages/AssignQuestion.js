@@ -74,7 +74,7 @@ class AssignQuestion extends React.Component {
 
                                  <div className="row">
                                     <div className="col-8 mb-4">
-                                       <select className="w-50 mt-4">
+                                       <select className="w-50 mt-4 py-2">
                                           <option>Select User</option>
                                           <option>Kate Capasso</option>
                                           <option>Brandon McDaniel</option>

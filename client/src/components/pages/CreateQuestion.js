@@ -51,7 +51,14 @@ class CreateQuestion extends React.Component {
    }
 
    setDeletedAnswer() {
-      // splice the answer from the array of answers within the question
+      // delete answer from the array
+   }
+
+   createQuestion() {
+      // get the value of all the inputs
+      // onclick save log the question and the answers as one object of question
+      const question = cloneDeep(this.state.question);
+      this.setState({ question });
    }
 
    render() {
@@ -108,9 +115,9 @@ class CreateQuestion extends React.Component {
                         <button
                            type="button"
                            className="btn-lg btn-primary btn-block float-right"
-                           // onClick={() => {
-                           //    this.createQuestion();
-                           // }}
+                           onClick={() => {
+                              this.createQuestion();
+                           }}
                         >
                            Save Question
                         </button>

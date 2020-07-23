@@ -19,7 +19,7 @@ class UserReport extends React.Component {
          showUserReport: false,
          hideRightCaret: true,
          hideDownCaret: false,
-         userResults: [],
+         getUsersResults: [],
       };
    }
 
@@ -28,10 +28,10 @@ class UserReport extends React.Component {
 
       axios
          .get("/api/v1/user-questions")
-         .then((res1) => {
+         .then((dbRes) => {
             // handle success
-            console.log(res1);
-            let userQuestions = res1.data;
+            console.log(dbRes);
+            let userQuestions = dbRes.data;
 
             axios
                .get("/api/v1/all-users")
@@ -45,17 +45,17 @@ class UserReport extends React.Component {
                            .filter(
                               (userQuestion) => userQuestion.user_id === user.id
                            )
-                           .map((userAnswer) => {
-                              console.log("NO", userAnswer);
+                           .map((userResults) => {
+                              console.log("NO", userResults);
                               return {
-                                 question: userAnswer.question_title,
-                                 answer: userAnswer.user_answer_text,
+                                 question: userResults.question_title,
+                                 answer: userResults.user_answer_text,
                               };
                            }),
                      };
                   });
                   console.log(users);
-                  this.setState({ userResults: users });
+                  this.setState({ getUsersResults: users });
                })
                .catch((error) => {
                   // handle error
@@ -119,7 +119,7 @@ class UserReport extends React.Component {
 
                         {this.state.showUserReport && (
                            <form className="mt-2">
-                              {this.state.userResults.map((user, i) => {
+                              {this.state.getUsersResults.map((user, i) => {
                                  return (
                                     <div key={user.id + i}>
                                        <h3>{user.name} </h3>

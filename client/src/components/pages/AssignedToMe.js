@@ -22,7 +22,6 @@ class AssignedToMe extends React.Component {
       axios
          .get(
             "https://raw.githubusercontent.com/kcapasso-mcdaniel/first-react-app/master/src/data/mock-data-json/user-questions.json"
-            // /api/v1/user-questions?userId=61d7d1be-4ada-4c1a-81c0-c6b82f45132e
          )
          .then((res) => {
             // handle success

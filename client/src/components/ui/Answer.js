@@ -6,6 +6,7 @@ export default class Answer extends React.Component {
 
       this.state = {
          addNewAnswer: true,
+         deleteAnswer: true,
       };
    }
 
