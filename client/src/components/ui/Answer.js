@@ -22,7 +22,9 @@ export default class Answer extends React.Component {
    deleteAnswer() {
       // remove current answer from the state of answerInputs
       // use pull possibly
-      this.setState({ addNewAnswer: !this.state.addNewAnswer });
+      const text = document.getElementById(this.props.id).value;
+      console.log(text);
+      this.props.setDeleteAnswer(this.props.id, text);
    }
 
    render() {

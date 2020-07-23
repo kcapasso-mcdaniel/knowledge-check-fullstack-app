@@ -50,15 +50,11 @@ class CreateQuestion extends React.Component {
       this.setState({ question });
    }
 
-   setDeletedAnswer() {
-      // delete answer from the array
-   }
+   setDeleteAnswer() {}
 
    createQuestion() {
       // get the value of all the inputs
       // onclick save log the question and the answers as one object of question
-      const question = cloneDeep(this.state.question);
-      this.setState({ question });
    }
 
    render() {
