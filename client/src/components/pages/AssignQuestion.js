@@ -74,7 +74,12 @@ class AssignQuestion extends React.Component {
 
                                  <div className="row">
                                     <div className="col-8 mb-4">
-                                       <input className="w-25 mt-4"></input>
+                                       <select className="w-50 mt-4">
+                                          <option>Select User</option>
+                                          <option>Kate Capasso</option>
+                                          <option>Brandon McDaniel</option>
+                                          <option>Sally Smith</option>
+                                       </select>
 
                                        <div className="col-2 d-inline">
                                           <button className="btn-sm btn-warning mt-2">

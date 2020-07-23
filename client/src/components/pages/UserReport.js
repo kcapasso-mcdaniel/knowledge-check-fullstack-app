@@ -42,12 +42,14 @@ class UserReport extends React.Component {
                         id: `${user.id}`,
                         name: `${user.first_name} ${user.last_name}`,
                         questions: userQuestions
-                           .filter((item) => item.user_id === user.id)
-                           .map((result) => {
-                              console.log("NO", result);
+                           .filter(
+                              (userQuestion) => userQuestion.user_id === user.id
+                           )
+                           .map((userAnswer) => {
+                              console.log("NO", userAnswer);
                               return {
-                                 question: result.question_title,
-                                 answer: result.user_answer_text,
+                                 question: userAnswer.question_title,
+                                 answer: userAnswer.user_answer_text,
                               };
                            }),
                      };
