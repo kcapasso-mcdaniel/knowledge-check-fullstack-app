@@ -1,7 +1,6 @@
 import React from "react";
 import Navigation from "../ui/Navigation";
-import caretDownIcon from "../../icons/caret-down.svg";
-import caretRightIcon from "../../icons/caret-right.svg";
+import correctCheck from "../../icons/correct-check.svg";
 // import userQuestions from "../../data/user-questions";
 import axios from "axios";
 // import actions from "../../store/actions";
@@ -91,59 +90,42 @@ class UserReport extends React.Component {
                   ></input>
                   <div className="card">
                      <div className="card-body">
-                        {/* toggle when click icon next to user show assigned questions */}
+                        <form>
+                           {this.state.getUsersResults.map((user, i) => {
+                              return (
+                                 <div key={user.id + i} className="mb-6">
+                                    <h3 className="font-weight-bold">
+                                       {user.name}{" "}
+                                    </h3>
+                                    {user.questions.map((question, i) => {
+                                       return (
+                                          <div key={question.question + i}>
+                                             <h3>{question.question} </h3>
+                                             <img
+                                                src={correctCheck}
+                                                alt=""
+                                                width="24px"
+                                                className=""
+                                                style={{ marginBottom: "6px" }}
+                                             ></img>
+                                             <h3 className="text-primary ml-2 d-inline">
+                                                {question.answer}
+                                             </h3>
+                                          </div>
+                                       );
+                                    })}
 
-                        {this.state.hideRightCaret && (
-                           <img
-                              src={caretRightIcon}
-                              style={{}}
-                              alt=""
-                              onClick={() => {
-                                 this.toggleAssignedQuestions();
-                              }}
-                           />
-                        )}
-
-                        {this.state.hideDownCaret && (
-                           <img
-                              src={caretDownIcon}
-                              style={{}}
-                              alt=""
-                              onClick={() => {
-                                 this.toggleAssignedQuestions();
-                              }}
-                           />
-                        )}
-
-                        <h3 className="d-inline">User Report</h3>
-
-                        {this.state.showUserReport && (
-                           <form className="mt-2">
-                              {this.state.getUsersResults.map((user, i) => {
-                                 return (
-                                    <div key={user.id + i}>
-                                       <h3>{user.name} </h3>
-                                       {user.questions.map((question, i) => {
-                                          return (
-                                             <div key={question.question + i}>
-                                                <h3>{question.question} </h3>
-                                                <h3>{question.answer}</h3>
-                                             </div>
-                                          );
-                                       })}
-
-                                       {/* user id, display one name and with user id match all questions and answers  */}
-                                       {/* <ul>
+                                    {/* user id, display one name and with user id match all questions and answers  */}
+                                    {/* <ul>
                                           <UserQuestions
                                              questions={user.questions}
                                              key={user.id}
                                           />
                                        </ul> */}
-                                    </div>
-                                 );
-                              })}
-                           </form>
-                        )}
+                                 </div>
+                              );
+                           })}
+                        </form>
                      </div>
                   </div>
                </div>

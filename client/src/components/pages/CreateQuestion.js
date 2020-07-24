@@ -50,7 +50,10 @@ class CreateQuestion extends React.Component {
       this.setState({ question });
    }
 
-   setDeleteAnswer() {}
+   setDeleteAnswer() {
+      //  need the index and the id of the answer being deleted in order to remove
+      // const question = cloneDeep(this.state.question);
+   }
 
    createQuestion() {
       // get the value of all the inputs
