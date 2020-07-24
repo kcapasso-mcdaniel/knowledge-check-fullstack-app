@@ -24,7 +24,7 @@ router.get("/", (req, res) => {
          // .then((userAnsweredQuestions) => {
          //    // then get something successful can console.log user questions
          //    console.log(userAnsweredQuestions);
-         //    const camelCaseUserAnsweredQuestions = userAnsweredQuestions.map(
+         //    const camelCaseQuestions = userAnsweredQuestions.map(
          //       (userAnsweredQuestion) => {
          //          return {
          //             userId: userAnsweredQuestion.user_id,
@@ -37,8 +37,8 @@ router.get("/", (req, res) => {
          //          };
          //       }
          //    );
-         //    console.log(camelCaseUserAnsweredQuestions);
-         //    res.json(camelCaseUserAnsweredQuestions);
+         //    console.log(camelCaseQuestions);
+         //    res.json(camelCaseQuestions);
       })
       .catch((err) => {
          // catch if there is a database error and throw error message

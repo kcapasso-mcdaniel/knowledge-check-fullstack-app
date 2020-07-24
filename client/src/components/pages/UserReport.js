@@ -27,10 +27,10 @@ class UserReport extends React.Component {
 
       axios
          .get("/api/v1/user-questions")
-         .then((dbRes) => {
+         .then((userAnsweredQuestions) => {
             // handle success
-            console.log(dbRes);
-            let userQuestions = dbRes.data;
+            console.log("test", userAnsweredQuestions);
+            let eachUserQuestion = userAnsweredQuestions.data;
 
             axios
                .get("/api/v1/all-users")
@@ -40,7 +40,7 @@ class UserReport extends React.Component {
                      return {
                         id: `${user.id}`,
                         name: `${user.first_name} ${user.last_name}`,
-                        questions: userQuestions
+                        questions: eachUserQuestion
                            .filter(
                               (userQuestion) => userQuestion.user_id === user.id
                            )

@@ -19,7 +19,7 @@ class AssignQuestion extends React.Component {
    componentDidMount() {
       axios
          .get(
-            "https://raw.githubusercontent.com/kcapasso-mcdaniel/first-react-app/master/src/data/mock-data-json/questions.json"
+            "https://raw.githubusercontent.com/kcapasso-mcdaniel/knowledge-check-fullstack-app/master/client/src/data/mock-data-json/questions.json"
          )
          .then((res) => {
             // handle success
