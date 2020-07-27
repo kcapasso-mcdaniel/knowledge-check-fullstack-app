@@ -53,6 +53,9 @@ class EditQuestion extends React.Component {
       this.setState({ question });
    }
 
+   createQuestion() {
+      console.log("clicked");
+   }
    render() {
       return (
          <div className="container">
