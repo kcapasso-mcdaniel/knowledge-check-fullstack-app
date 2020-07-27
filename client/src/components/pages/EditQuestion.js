@@ -40,6 +40,7 @@ class EditQuestion extends React.Component {
       const answer = { id: answerId };
       question.answers.push(answer);
       // updating question state
+      console.log("clicked");
       this.setState({ question });
    }
 

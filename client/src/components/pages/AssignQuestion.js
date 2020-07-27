@@ -59,6 +59,10 @@ class AssignQuestion extends React.Component {
       this.props.history.push("/create-question");
    }
 
+   assignTheQuestion() {
+      console.log("clicked");
+   }
+
    render() {
       return (
          <div className="container">
@@ -82,7 +86,13 @@ class AssignQuestion extends React.Component {
                                        </select>
 
                                        <div className="col-2 d-inline">
-                                          <button className="btn-sm btn-warning mt-2">
+                                          <button
+                                             className="btn-sm btn-warning mt-2"
+                                             type="button"
+                                             onClick={() => {
+                                                this.assignTheQuestion();
+                                             }}
+                                          >
                                              Assign
                                           </button>
                                        </div>
