@@ -10,7 +10,6 @@
       "chalk": "^4.1.0",
       "classnames": "^2.2.6",
       "node-sass": "^4.14.1",
-      "object-hash": "^2.0.3",
       "react": "^16.13.1",
       "react-dom": "^16.13.1",
       "react-icons": "^3.10.0",
@@ -42,5 +41,5 @@
          "last 1 safari version"
       ]
    },
-   "proxy": "http://localhost:5001"
+   "proxy": "http://localhost:5002"
 }

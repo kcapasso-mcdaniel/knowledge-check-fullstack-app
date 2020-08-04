@@ -1,6 +1,5 @@
 import React from "react";
 import classnames from "classnames";
-import hash from "object-hash";
 import { v4 as getUuid } from "uuid";
 import axios from "axios";
 import actions from "../../store/actions";
@@ -108,7 +107,7 @@ class LogIn extends React.Component {
             firstName: userFirstNameInput,
             lastName: userLastNameInput,
             userEmail: logInUserEmailInput,
-            userPassword: hash(logInUserPasswordInput),
+            userPassword: logInUserPasswordInput,
             createdOn: Date.now(),
          };
          console.log(user);
