@@ -127,17 +127,17 @@ class SignUp extends React.Component {
       ) {
          // user object requirements
          const user = {
-            createId: getUuid(),
+            id: getUuid(),
             firstName: userFirstNameInput,
             lastName: userLastNameInput,
-            userEmail: signUpUserEmailInput,
-            userPassword: signUpUserPasswordInput,
-            createdOn: Date.now(),
+            email: signUpUserEmailInput,
+            password: signUpUserPasswordInput,
+            createdAt: Date.now(),
          };
          console.log(user);
          // post to API
          axios
-            .post("/api/v1/users", { test: "me" })
+            .post("/api/v1/users", user)
             .then((res) => {
                console.log(res);
             })

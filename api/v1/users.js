@@ -6,7 +6,8 @@ const db = require("../../db");
 
 // change file paths
 const selectUser = require("../../queries/selectUser");
-const { toJson, toSafelyParseJson } = require("../../utils/helpers");
+const insertUser = require("../../queries/insertUser");
+const { toJson, toSafelyParseJson, toHash } = require("../../utils/helpers");
 
 // @route  GET api/v1/users
 // @desc  GET a valid user via email and password
@@ -33,9 +34,25 @@ router.get("/", (req, res) => {
 // @desc  Create a valid user
 // @access PUBLIC
 
-router.post("/", (req, res) => {
-   console.log("hit api");
-   console.log(req.body);
+router.post("/", async (req, res) => {
+   const user = {
+      id: req.body.id,
+      first_name: req.body.firstName,
+      last_name: req.body.lastName,
+      email: req.body.email,
+      password: await toHash(req.body.password),
+      created_at: req.body.createdAt,
+   };
+   // call insertUser query and pass the object that we created with the values
+   db.query(insertUser, user)
+      .then((dbRes) => {
+         console.log(dbRes);
+         // return user data so can put in redux store
+      })
+      .catch((err) => {
+         console.log(err);
+         // return 400 error
+      });
 });
 
 module.exports = router;

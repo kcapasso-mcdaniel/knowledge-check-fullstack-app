@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const path = require("path");
 
+app.use(express.json());
+
 app.use("/api/v1/users", require("./api/v1/users"));
 app.use("/api/v1/user-questions", require("./api/v1/user-questions"));
 app.use("/api/v1/all-users", require("./api/v1/all-users"));
@@ -14,7 +16,7 @@ app.get("*", (req, res) => {
 });
 
 // keep port as an environment variable
-const port = process.env.PORT || 5002;
+const port = process.env.PORT || 5001;
 app.listen(port, () =>
    console.log(`Server running at http://localhost:${port}`)
 );

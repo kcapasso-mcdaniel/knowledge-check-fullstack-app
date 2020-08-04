@@ -106,8 +106,8 @@ class LogIn extends React.Component {
             createId: getUuid(),
             firstName: userFirstNameInput,
             lastName: userLastNameInput,
-            userEmail: logInUserEmailInput,
-            userPassword: logInUserPasswordInput,
+            email: logInUserEmailInput,
+            password: logInUserPasswordInput,
             createdOn: Date.now(),
          };
          console.log(user);
