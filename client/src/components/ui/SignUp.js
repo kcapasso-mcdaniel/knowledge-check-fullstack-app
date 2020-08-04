@@ -193,7 +193,7 @@ class SignUp extends React.Component {
                         <label htmlFor="signup-user-password-input">
                            Create password
                            <br />
-                           <span className="text-danger">
+                           <span className="text-muted">
                               Must be at least 9 characters
                            </span>
                         </label>
