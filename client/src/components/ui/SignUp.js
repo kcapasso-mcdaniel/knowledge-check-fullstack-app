@@ -3,8 +3,8 @@ import classnames from "classnames";
 import hash from "object-hash";
 import { v4 as getUuid } from "uuid";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
-import actions from "../../store/actions";
+// import axios from "axios";
+// import actions from "../../store/actions";
 import { connect } from "react-redux";
 
 class SignUp extends React.Component {
@@ -68,11 +68,6 @@ class SignUp extends React.Component {
             passwordError: "Please create a password",
             hasPasswordError: true,
          });
-      } else if (signUpUserPasswordInput.length < 9) {
-         this.setState({
-            passwordError: "Your password must be at least 9 characters.",
-            hasPasswordError: true,
-         });
       } else if (
          this.checkForLocalPart(signUpUserPasswordInput, signUpUserEmailInput)
       ) {
@@ -132,6 +127,9 @@ class SignUp extends React.Component {
          this.state.hasPasswordError === false
       ) {
          // user object requirements
+         // post to API
+         // update currentUser in Global State
+         // on success go to next page: this.props.history.push("/assigned-to-me");
          const user = {
             createId: getUuid(),
             firstName: userFirstNameInput,
@@ -141,25 +139,6 @@ class SignUp extends React.Component {
             createdOn: Date.now(),
          };
          console.log(user);
-         // Mimic API response
-         axios
-            .get(
-               "https://raw.githubusercontent.com/kcapasso-mcdaniel/first-react-app/master/src/data/mock-data-json/user.json"
-            )
-            .then((res) => {
-               // store what we get from api
-               const currentUser = res.data;
-               console.log(currentUser);
-               this.props.dispatch({
-                  type: actions.UPDATE_CURRENT_USER,
-                  payload: res.data,
-               });
-            })
-            .catch((error) => {
-               // handle error
-               console.log(error);
-            });
-         this.props.history.push("/assigned-to-me");
       }
    }
 
@@ -212,7 +191,11 @@ class SignUp extends React.Component {
                         <p className="text-danger">{this.state.emailError}</p>
 
                         <label htmlFor="signup-user-password-input">
-                           Password
+                           Create password
+                           <br />
+                           <span className="text-danger">
+                              Must be at least 9 characters
+                           </span>
                         </label>
                         <input
                            type="password"
