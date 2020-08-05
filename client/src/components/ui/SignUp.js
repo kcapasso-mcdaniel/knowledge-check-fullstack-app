@@ -134,18 +134,19 @@ class SignUp extends React.Component {
             password: signUpUserPasswordInput,
             createdAt: Date.now(),
          };
-         console.log(user);
+         console.log("create user to POST", user);
          // post to API
          axios
             .post("/api/v1/users", user)
             .then((res) => {
                console.log(res);
+               // on success
+               // update currentUser in Global State
+               // on success go to next page: this.props.history.push("/assigned-to-me");
             })
             .catch((err) => {
-               console.log(err);
+               console.log(err.response.data);
             });
-         // update currentUser in Global State
-         // on success go to next page: this.props.history.push("/assigned-to-me");
       }
    }
 
