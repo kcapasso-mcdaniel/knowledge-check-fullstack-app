@@ -3,7 +3,7 @@ import classnames from "classnames";
 import { v4 as getUuid } from "uuid";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
-// import actions from "../../store/actions";
+import actions from "../../store/actions";
 import { connect } from "react-redux";
 
 class SignUp extends React.Component {
@@ -23,67 +23,7 @@ class SignUp extends React.Component {
 
    displayTheInputs() {
       this.setState({ isDisplayingSignUpForm: true });
-      this.props.history.push("/assigned-to-me");
-   }
-
-   async setEmailIsValidState(signUpUserEmailInput) {
-      const lowerCaseEmailInput = signUpUserEmailInput.toLowerCase();
-
-      //   check that email address is valid with regex
-      // eslint-disable-next-line
-      const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (signUpUserEmailInput === "")
-         this.setState({
-            emailError: "Please enter your email address.",
-            hasEmailError: true,
-         });
-      else if (emailRegex.test(lowerCaseEmailInput) === false) {
-         this.setState({
-            emailError: "Please enter a valid email address",
-            hasEmailError: true,
-         });
-      } else {
-         this.setState({ emailError: "", hasEmailError: false });
-      }
-   }
-
-   checkForLocalPart(signUpUserPasswordInput, signUpUserEmailInput) {
-      const localPart = signUpUserEmailInput.split("@")[0];
-      // allows for less than four common characters in the email input and the password input
-      if (localPart.length < 4) return false;
-      else return signUpUserPasswordInput.includes(localPart);
-   }
-
-   // Password validation requirements
-   async setPasswordIsValidState(
-      signUpUserPasswordInput,
-      signUpUserEmailInput
-   ) {
-      console.log(signUpUserPasswordInput);
-      const uniqPasswordInputChars = [...new Set(signUpUserPasswordInput)];
-      console.log(uniqPasswordInputChars);
-      if (signUpUserPasswordInput === "") {
-         this.setState({
-            passwordError: "Please create a password",
-            hasPasswordError: true,
-         });
-      } else if (
-         this.checkForLocalPart(signUpUserPasswordInput, signUpUserEmailInput)
-      ) {
-         this.setState({
-            passwordError:
-               "Your password cannot contain the local part of the email",
-            hasPasswordError: true,
-         });
-      } else if (uniqPasswordInputChars.length < 3) {
-         this.setState({
-            passwordError:
-               "Password must contain at least 3 unique characters.",
-            hasPasswordError: true,
-         });
-      } else {
-         this.setState({ passwordError: "", hasPasswordError: false });
-      }
+      this.props.history.push("/assign-question");
    }
 
    // user object created after submission validation is performed
@@ -91,63 +31,67 @@ class SignUp extends React.Component {
       //    get the value of the first name
       const userFirstNameInput = document.getElementById("user-first-name")
          .value;
-      console.log(userFirstNameInput);
-      if (userFirstNameInput === "")
-         this.setState({ firstNameError: "Field cannot be left blank" });
-      else {
-         this.setState({ firstNameError: "" });
-      }
       //    get the value of the last name
       const userLastNameInput = document.getElementById("user-last-name").value;
-      console.log(userLastNameInput);
-      if (userLastNameInput === "")
-         this.setState({ lastNameError: "Field cannot be left blank" });
-      else {
-         this.setState({ lastNameError: "" });
-      }
       //   get the value of the user email input
       const signUpUserEmailInput = document.getElementById(
          "signup-user-email-input"
       ).value;
-      console.log(signUpUserEmailInput);
-
       // get the value of the user password input
       const signUpUserPasswordInput = document.getElementById(
          "signup-user-password-input"
       ).value;
-      console.log(signUpUserPasswordInput);
-      await this.setEmailIsValidState(signUpUserEmailInput);
-      await this.setPasswordIsValidState(
-         signUpUserPasswordInput,
-         signUpUserEmailInput
-      );
-      if (
-         this.state.hasEmailError === false &&
-         this.state.hasPasswordError === false
-      ) {
-         // user object requirements
-         const user = {
-            id: getUuid(),
-            firstName: userFirstNameInput,
-            lastName: userLastNameInput,
-            email: signUpUserEmailInput,
-            password: signUpUserPasswordInput,
-            createdAt: Date.now(),
-         };
-         console.log("create user to POST", user);
-         // post to API
-         axios
-            .post("/api/v1/users", user)
-            .then((res) => {
-               console.log(res);
-               // on success
-               // update currentUser in Global State
-               // on success go to next page: this.props.history.push("/assigned-to-me");
-            })
-            .catch((err) => {
-               console.log(err.response.data);
+
+      // user object requirements
+      const user = {
+         id: getUuid(),
+         firstName: userFirstNameInput,
+         lastName: userLastNameInput,
+         email: signUpUserEmailInput,
+         password: signUpUserPasswordInput,
+         createdAt: Date.now(),
+      };
+      console.log("create user to POST", user);
+      // post to API
+      axios
+         .post("/api/v1/users", user)
+         // on success
+         .then((res) => {
+            console.log(res.data);
+            // update currentUser in Global State
+            this.props.dispatch({
+               type: actions.UPDATE_CURRENT_USER,
+               payload: res.data,
             });
-      }
+            //go to next page:
+            this.props.history.push("/assign-question");
+         })
+         .catch((err) => {
+            const { data } = err.response;
+            console.log(data);
+            const {
+               firstNameError,
+               lastNameError,
+               emailError,
+               passwordError,
+            } = data;
+            if (firstNameError !== "") {
+               this.setState({ firstNameError: firstNameError });
+            }
+            if (lastNameError !== "") {
+               this.setState({ lastNameError: lastNameError });
+            }
+            if (emailError !== "") {
+               this.setState({ hasEmailError: true, emailError });
+            } else {
+               this.setState({ hasEmailError: false, emailError });
+            }
+            if (passwordError !== "") {
+               this.setState({ hasPasswordError: true, passwordError });
+            } else {
+               this.setState({ hasPasswordError: false, passwordError });
+            }
+         });
    }
 
    render() {
