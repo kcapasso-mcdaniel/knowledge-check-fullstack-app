@@ -1,4 +1,4 @@
-// Resource file
+// users resource file
 // express
 const express = require("express");
 const router = express.Router();
@@ -8,11 +8,16 @@ const db = require("../../db");
 
 const insertUser = require("../../queries/insertUser");
 const selectUserById = require("../../queries/selectUserById");
+const selectUserByEmail = require("../../queries/selectUserByEmail");
 const { toHash } = require("../../utils/helpers");
 const getSignUpEmailError = require("../../validation/getSignUpEmailError");
 const getSignUpPasswordError = require("../../validation/getSignUpPasswordError");
 const getSignUpFirstNameError = require("../../validation/getSignUpFirstNameError");
 const getSignUpLastNameError = require("../../validation/getSignUpLastNameError");
+const getLoginEmailError = require("../../validation/getLoginEmailError");
+const getLoginPasswordError = require("../../validation/getLoginPasswordError");
+const getLoginFirstNameError = require("../../validation/getLoginFirstNameError");
+const getLoginLastNameError = require("../../validation/getLoginLastNameError");
 
 // @route  POST api/v1/users
 // @desc  Create a valid user
@@ -64,6 +69,52 @@ router.post("/", async (req, res) => {
          .catch((err) => {
             console.log(err);
             // return 400 error to user
+            dbError = `${err.code} ${err.sqlMessage}`;
+            res.status(400).json({ dbError });
+         });
+   } else {
+      res.status(400).json({
+         firstNameError: firstNameError,
+         lastNameError: lastNameError,
+         emailError: emailError,
+         passwordError: passwordError,
+      });
+   }
+});
+
+// subresource for users
+// @route  POST api/v1/users/auth
+// @desc   Check user against database with firstName, lastName, email, password
+// @access PUBLIC
+
+router.post("/auth", async (req, res) => {
+   const { firstName, lastName, email, password } = req.body;
+   const emailError = getLoginEmailError(email);
+   const passwordError = await getLoginPasswordError(password, email);
+   const firstNameError = getLoginFirstNameError(firstName);
+   const lastNameError = getLoginLastNameError(lastName);
+   let dbError = "";
+   if (
+      firstNameError === "" &&
+      lastNameError === "" &&
+      emailError === "" &&
+      passwordError === ""
+   ) {
+      // return the user to the client
+      db.query(selectUserByEmail, email)
+         .then((users) => {
+            const user = users[0];
+            res.status(200).json({
+               id: user.id,
+               firstName: user.first_name,
+               lastName: user.last_name,
+               email: user.email,
+               createdAt: user.created_at,
+            });
+         })
+         .catch((err) => {
+            console.log(err);
+            // return a 400 error to user
             dbError = `${err.code} ${err.sqlMessage}`;
             res.status(400).json({ dbError });
          });

@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 class SignUp extends React.Component {
    constructor(props) {
       super(props);
-      console.log("In a new class component");
+
       this.state = {
          isDisplayingSignUpForm: true,
          firstNameError: "",

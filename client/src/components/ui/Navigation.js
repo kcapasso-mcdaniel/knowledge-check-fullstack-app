@@ -14,7 +14,6 @@ class Navigation extends React.Component {
       const tabActiveOnAssignQuestion = (url) => {
          // if url contains this string highlight tab accordingly
          if (url.indexOf("assign-question") > 0) {
-            console.log("this tab is active");
             return "tab-active";
          } else return "";
       };

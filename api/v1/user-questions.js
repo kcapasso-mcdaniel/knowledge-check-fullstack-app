@@ -19,7 +19,7 @@ router.get("/", (req, res) => {
    db.query(returnUserReport()) // use our database to call the query method which opens connection & pass connection
       .then((userAnsweredQuestions) => {
          // then get something successful can console.log user questions
-         console.log(userAnsweredQuestions);
+         // console.log(userAnsweredQuestions);
          res.json(userAnsweredQuestions);
          // .then((userAnsweredQuestions) => {
          //    // then get something successful can console.log user questions
