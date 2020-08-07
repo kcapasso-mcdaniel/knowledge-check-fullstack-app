@@ -45,7 +45,7 @@ class UserReport extends React.Component {
                               (userQuestion) => userQuestion.user_id === user.id
                            )
                            .map((userResults) => {
-                              console.log("NO", userResults);
+                              // console.log("NO", userResults);
                               return {
                                  question: userResults.question_title,
                                  answer: userResults.user_answer_text,

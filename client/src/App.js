@@ -8,6 +8,38 @@ import NotFound from "./components/pages/NotFound";
 import AssignQuestion from "./components/pages/AssignQuestion";
 import AssignedToMe from "./components/pages/AssignedToMe";
 import EditQuestion from "./components/pages/EditQuestion";
+import jwtDecode from "jwt-decode";
+import store from "./store/store";
+import actions from "./store/actions";
+
+const authToken = localStorage.authToken;
+if (authToken) {
+   // if authToken is not expired
+   const currentTimeInSec = Date.now() / 1000;
+   const user = jwtDecode(authToken);
+   if (currentTimeInSec > user.exp) {
+      console.log("expired-token");
+      // remove the currentUser from the global state/redux store
+      store.dispatch({
+         type: actions.UPDATE_CURRENT_USER,
+         payload: {},
+      });
+   } else {
+      console.log("valid-token");
+      store.dispatch({
+         type: actions.UPDATE_CURRENT_USER,
+         payload: user,
+      });
+
+      // set authorization headers
+      const currentUrl = window.location.pathname;
+      if (currentUrl === "/") {
+         window.location.href = "/assign-question";
+      }
+   }
+} else {
+   console.log("no token");
+}
 
 function App() {
    return (

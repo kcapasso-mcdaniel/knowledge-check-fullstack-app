@@ -1,4 +1,5 @@
 // users resource file
+require("dotenv").config();
 // express
 const express = require("express");
 const router = express.Router();
@@ -18,6 +19,9 @@ const getLoginEmailError = require("../../validation/getLoginEmailError");
 const getLoginPasswordError = require("../../validation/getLoginPasswordError");
 const getLoginFirstNameError = require("../../validation/getLoginFirstNameError");
 const getLoginLastNameError = require("../../validation/getLoginLastNameError");
+
+// jsonwebtoken
+const jwt = require("jsonwebtoken");
 
 // @route  POST api/v1/users
 // @desc  Create a valid user
@@ -82,7 +86,7 @@ router.post("/", async (req, res) => {
    }
 });
 
-// subresource for users
+// auth subresource
 // @route  POST api/v1/users/auth
 // @desc   Check user against database with firstName, lastName, email, password
 // @access PUBLIC
@@ -103,14 +107,17 @@ router.post("/auth", async (req, res) => {
       // return the user to the client
       db.query(selectUserByEmail, email)
          .then((users) => {
-            const user = users[0];
-            res.status(200).json({
-               id: user.id,
-               firstName: user.first_name,
-               lastName: user.last_name,
-               email: user.email,
-               createdAt: user.created_at,
+            // remember to do on the sign up
+            const user = {
+               id: users[0].id,
+               email: users[0].email,
+               createdAt: users[0].created_at,
+            };
+            const accessToken = jwt.sign(user, process.env.JWT_ACCESS_SECRET, {
+               expiresIn: "1m",
             });
+
+            res.status(200).json(accessToken);
          })
          .catch((err) => {
             console.log(err);

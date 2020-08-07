@@ -4,6 +4,7 @@ import axios from "axios";
 import actions from "../../store/actions";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 // TODO LIST
 // login and show a user logged in to the program
@@ -52,16 +53,18 @@ class LogIn extends React.Component {
             email: logInUserEmailInput,
             password: logInUserPasswordInput,
          };
-         console.log("Create user object to POST", user);
+         // console.log("Create user object to POST", user);
          // post to API
          axios
             .post("/api/v1/users/auth", user)
             .then((res) => {
-               console.log(res.data);
-               // Update currentUser in global state with API response
+               // set token in localStorage
+               const authToken = res.data;
+               localStorage.setItem("authToken", authToken);
+               const user = jwtDecode(authToken);
                this.props.dispatch({
                   type: actions.UPDATE_CURRENT_USER,
-                  payload: res.data,
+                  payload: user,
                });
                this.props.history.push("/assign-question");
             })

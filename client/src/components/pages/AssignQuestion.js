@@ -23,7 +23,7 @@ class AssignQuestion extends React.Component {
          )
          .then((res) => {
             // handle success
-            console.log(res);
+            // console.log(res);
             const questions = res.data;
             console.log(res.data);
             this.setState({ questionsToAssign: questions });
