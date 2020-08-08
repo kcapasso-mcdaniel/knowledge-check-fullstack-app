@@ -114,14 +114,6 @@ class UserReport extends React.Component {
                                           </div>
                                        );
                                     })}
-
-                                    {/* user id, display one name and with user id match all questions and answers  */}
-                                    {/* <ul>
-                                          <UserQuestions
-                                             questions={user.questions}
-                                             key={user.id}
-                                          />
-                                       </ul> */}
                                  </div>
                               );
                            })}

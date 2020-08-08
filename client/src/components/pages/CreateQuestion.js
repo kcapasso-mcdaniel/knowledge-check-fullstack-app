@@ -7,10 +7,6 @@ import { v4 as getUuid } from "uuid";
 import { connect } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
 
-// TODO LIST CREATE QUESTION
-// on click save log an object with the question and each answer and send to database
-// on click delete question refresh the page and clear the inputs
-
 class CreateQuestion extends React.Component {
    constructor(props) {
       super(props);
@@ -49,6 +45,10 @@ class CreateQuestion extends React.Component {
       answer.text = text;
       this.setState({ question });
    }
+
+   // Console.log a question object on Create a Question page
+   // Send this question object to the server
+   // Store the values into 3 tables in your MySQL DB: questions, answers, xref_user_questions
 
    setDeleteAnswer() {
       //  need the index and the id of the answer being deleted in order to remove

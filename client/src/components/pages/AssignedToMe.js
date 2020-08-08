@@ -1,8 +1,6 @@
 import React from "react";
 import Navigation from "../ui/Navigation";
 import Question from "../ui/Question";
-// import userQuestions from "../../data/user-questions";
-// import find from "lodash/find";
 import axios from "axios";
 import { connect } from "react-redux";
 
@@ -22,7 +20,7 @@ class AssignedToMe extends React.Component {
       axios
          .get(
             "https://raw.githubusercontent.com/kcapasso-mcdaniel/knowledge-check-fullstack-app/master/client/src/data/mock-data-json/user-questions.json"
-            // "api/v1/assigned-questions?userId=61d7d1be-4ada-4c1a-81c0-c6b82f45132e"
+            // "api/v1/user-questions?userId=61d7d1be-4ada-4c1a-81c0-c6b82f45132e"
          )
          .then((res) => {
             // handle success
@@ -49,15 +47,6 @@ class AssignedToMe extends React.Component {
       const questionId = e.target.name;
       const answerId = e.target.id;
       const user = { ...this.state.currentUser };
-      // console.log("what", user);
-
-      // returns only the first question in the array that matches the criteria
-      // const filteredQuestions = user.questions.filter((question) => {
-      //    return question.id === questionId;
-      // });
-
-      // // pulls the question out of the object starting at the first index
-      // const question = filteredQuestions[0];
 
       // use the JavaScript find method
       const question = user.questions.find((question) => {
