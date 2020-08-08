@@ -7,15 +7,15 @@ const db = require("../../db");
 // change file paths
 
 const returnUserReport = require("../../queries/returnUserReport");
+const validateJwt = require("../../utils/validateJwt");
 
 // @route  GET api/v1/users
 // @desc  GET a valid user via email and password
-// @access PUBLIC
+// @access Private
 
 // can run a query
-router.get("/", (req, res) => {
+router.get("/", validateJwt, (req, res) => {
    console.log(req.query);
-   // const userId = req.query.userId;
    db.query(returnUserReport()) // use our database to call the query method which opens connection & pass connection
       .then((userAnsweredQuestions) => {
          // then get something successful can console.log user questions

@@ -7,13 +7,14 @@ const db = require("../../db");
 // change file paths
 const selectUsers = require("../../queries/selectUsers");
 const { toJson, toSafelyParseJson } = require("../../utils/helpers");
+const validateJwt = require("../../utils/validateJwt");
 
 // @route  GET api/v1/users
 // @desc  GET a valid user via email and password
 // @access PUBLIC
 
 // can run a query
-router.get("/", (req, res) => {
+router.get("/", validateJwt, (req, res) => {
    console.log(req.query);
    db.query(selectUsers()) // use our database to call the query method which opens connection & pass connection
       .then((dbRes) => {
