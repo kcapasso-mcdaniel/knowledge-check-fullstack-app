@@ -15,7 +15,8 @@ export default class Answer extends React.Component {
       const text = document.getElementById(this.props.id).value;
       console.log(text);
       // add answer to the answers array inside of this.state.question
-      this.props.setAnswerText(this.props.id, text);
+      const incorrectAnswers = this.props.setAnswerText(this.props.id, text);
+      console.log(incorrectAnswers);
    }
 
    // delete the input on the page
@@ -30,15 +31,15 @@ export default class Answer extends React.Component {
          <>
             {this.state.addNewAnswer && (
                <div className="row">
-                  <div className="col-sm-2">
+                  <div className="col-sm-3">
                      <label
                         htmlFor={this.props.id}
-                        className="col-form-label mr-2"
+                        className="col-form-label mr-2 text-secondary"
                      >
-                        Answer
+                        Incorrect Answer
                      </label>
                   </div>
-                  <div className="col-sm-6">
+                  <div className="col-sm-5">
                      <input
                         type="text"
                         className="form-control"

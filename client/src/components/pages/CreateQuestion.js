@@ -17,8 +17,8 @@ class CreateQuestion extends React.Component {
             id: getUuid(),
             createdByUserId: this.props.currentUser.id,
             title: "", // update when user types into title input
-            correctAnswerId: "", //update when user selects correct answer
-            answers: [],
+            correctAnswer: {}, //update when user selects correct answer
+            incorrectAnswers: [],
             assignees: [],
          },
          answerFields: [],
@@ -31,19 +31,47 @@ class CreateQuestion extends React.Component {
       const question = cloneDeep(this.state.question);
       const answerId = getUuid();
       const answer = { id: answerId };
-      question.answers.push(answer);
+      question.incorrectAnswers.push(answer);
       // updating question state
       this.setState({ question });
    }
 
    setAnswerText(answerId, text) {
       const question = cloneDeep(this.state.question);
-      const answer = question.answers.find((answer) => {
+      const answer = question.incorrectAnswers.find((answer) => {
          return answer.id === answerId;
       });
       console.log(answer);
       answer.text = text;
       this.setState({ question });
+   }
+
+   // Correct Answer
+
+   setCorrectAnswerId() {
+      const question = cloneDeep(this.state.question);
+      const correctAnswerId = getUuid();
+      const answer = { id: correctAnswerId };
+      question.correctAnswer.push(answer);
+      // updating question state
+      this.setState({ question });
+   }
+
+   setCorrectAnswerText(correctAnswerId, text) {
+      const question = cloneDeep(this.state.question);
+      const answer = question.correctAnswer.find((answer) => {
+         return answer.id === correctAnswerId;
+      });
+      console.log(answer);
+      answer.text = text;
+      this.setState({ question });
+   }
+
+   saveCorrectAnswer() {
+      console.log("clicked");
+      // const correctAnswer = correctAnswerId, correctAnswerText
+      // new id for the correct answer
+      // save the text for the answer
    }
 
    // Console.log a question object on Create a Question page
@@ -56,8 +84,22 @@ class CreateQuestion extends React.Component {
    }
 
    createQuestion() {
-      // get the value of all the inputs
-      // onclick save log the question and the answers as one object of question
+      // both questionInput and correctAnswerInput need an id
+      const questionTitle = document.getElementById("question-input").value;
+      console.log(questionTitle);
+      const correctAnswerInput = document.getElementById("correct-answer-input")
+         .value;
+      console.log(correctAnswerInput);
+      const question = {
+         id: getUuid(),
+         title: questionTitle,
+         createdByUserId: this.state.createdByUserId,
+         correctAnswer: correctAnswerInput,
+         incorrectAnswers: [],
+         createOn: Date.now(),
+      };
+
+      console.log(question);
    }
 
    render() {
@@ -67,16 +109,44 @@ class CreateQuestion extends React.Component {
                <div className="col-12">
                   <Navigation />
                   <div className="form-group">
-                     <label htmlFor="formGroupExampleInput">Question</label>
+                     <label htmlFor="formGroupExampleInput">
+                        <b>Question</b>
+                     </label>
                      <input
                         type="text"
                         className="form-control"
                         id="question-input"
                      />
                   </div>
-
+                  <div className="row">
+                     <div className="col-sm-3 mb-2">
+                        <label
+                           htmlFor="correct-answer-input"
+                           className="text-dark"
+                        >
+                           <b>Correct Answer</b>
+                        </label>
+                     </div>
+                     <div className="col-sm-7">
+                        <input
+                           type="text"
+                           className="form-control"
+                           id="correct-answer-input"
+                        />
+                     </div>
+                     <div className="col-sm-2">
+                        <button
+                           className="btn-sm btn-primary btn-block mb-2"
+                           type="button"
+                           id="save-answer"
+                           onClick={() => this.saveCorrectAnswer()}
+                        >
+                           Save
+                        </button>
+                     </div>
+                  </div>
                   {/* change to Answer */}
-                  {this.state.question.answers.map((answer) => {
+                  {this.state.question.incorrectAnswers.map((answer) => {
                      return (
                         <Answer
                            key={answer.id}
@@ -94,7 +164,7 @@ class CreateQuestion extends React.Component {
                               this.setAnswerId();
                            }}
                         >
-                           Add Answer
+                           Add Incorrect Answer
                         </button>
                      </div>
                   </div>
