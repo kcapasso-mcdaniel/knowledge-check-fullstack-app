@@ -17,11 +17,16 @@ class CreateQuestion extends React.Component {
             id: getUuid(),
             createdByUserId: this.props.currentUser.id,
             title: "", // update when user types into title input
-            correctAnswer: {}, //update when user selects correct answer
-            incorrectAnswers: [],
+            correctAnswerId: "", //update when user selects correct answer
+            answers: [],
             assignees: [],
+            createdOn: Date.now(),
          },
          answerFields: [],
+         correctAnswer: {
+            id: getUuid(),
+            text: "",
+         },
       };
       // pass function through children - this refer to create question
       this.setAnswerText = this.setAnswerText.bind(this);
@@ -31,14 +36,14 @@ class CreateQuestion extends React.Component {
       const question = cloneDeep(this.state.question);
       const answerId = getUuid();
       const answer = { id: answerId };
-      question.incorrectAnswers.push(answer);
+      question.answers.push(answer);
       // updating question state
       this.setState({ question });
    }
 
    setAnswerText(answerId, text) {
       const question = cloneDeep(this.state.question);
-      const answer = question.incorrectAnswers.find((answer) => {
+      const answer = question.answers.find((answer) => {
          return answer.id === answerId;
       });
       console.log(answer);
@@ -46,60 +51,49 @@ class CreateQuestion extends React.Component {
       this.setState({ question });
    }
 
-   // Correct Answer
-
-   setCorrectAnswerId() {
-      const question = cloneDeep(this.state.question);
-      const correctAnswerId = getUuid();
-      const answer = { id: correctAnswerId };
-      question.correctAnswer.push(answer);
-      // updating question state
-      this.setState({ question });
-   }
-
-   setCorrectAnswerText(correctAnswerId, text) {
-      const question = cloneDeep(this.state.question);
-      const answer = question.correctAnswer.find((answer) => {
-         return answer.id === correctAnswerId;
-      });
-      console.log(answer);
-      answer.text = text;
-      this.setState({ question });
-   }
-
-   saveCorrectAnswer() {
-      console.log("clicked");
-      // const correctAnswer = correctAnswerId, correctAnswerText
-      // new id for the correct answer
-      // save the text for the answer
-   }
-
    // Console.log a question object on Create a Question page
    // Send this question object to the server
    // Store the values into 3 tables in your MySQL DB: questions, answers, xref_user_questions
 
-   setDeleteAnswer() {
-      //  need the index and the id of the answer being deleted in order to remove
-      // const question = cloneDeep(this.state.question);
+   createQuestion() {
+      const question = cloneDeep(this.state.question);
+
+      const correctAnswer = this.state.correctAnswer;
+      // if this.state.correctAnswer.id === an id that is already in the array
+      if (correctAnswer.id === question.answers.id) {
+         // then update the text
+         console.log("true");
+         return true;
+      } else {
+         // else add it to the array
+         // add correctAnswer to the answers[] push object into array
+         question.answers.push(correctAnswer);
+      }
+
+      // add this.state.correctAnswer.id to this.state.question.correctAnswerId
+      question.correctAnswerId = correctAnswer.id;
+
+      // set State
+      this.setState({ question });
+
+      // POST to server API
+      // post to API
+      // axios
+      //    .post("/api/v1/questions")
+      //    .then(() => {})
+      //    .catch(() => {});
    }
 
-   createQuestion() {
-      // both questionInput and correctAnswerInput need an id
-      const questionTitle = document.getElementById("question-input").value;
-      console.log(questionTitle);
-      const correctAnswerInput = document.getElementById("correct-answer-input")
-         .value;
-      console.log(correctAnswerInput);
-      const question = {
-         id: getUuid(),
-         title: questionTitle,
-         createdByUserId: this.state.createdByUserId,
-         correctAnswer: correctAnswerInput,
-         incorrectAnswers: [],
-         createOn: Date.now(),
-      };
+   setTitle(e) {
+      const question = cloneDeep(this.state.question);
+      question.title = e.target.value;
+      this.setState({ question });
+   }
 
-      console.log(question);
+   setCorrectAnswer(e) {
+      const correctAnswer = cloneDeep(this.state.correctAnswer);
+      correctAnswer.text = e.target.value;
+      this.setState({ correctAnswer });
    }
 
    render() {
@@ -116,6 +110,9 @@ class CreateQuestion extends React.Component {
                         type="text"
                         className="form-control"
                         id="question-input"
+                        onChange={(e) => {
+                           this.setTitle(e);
+                        }}
                      />
                   </div>
                   <div className="row">
@@ -132,21 +129,14 @@ class CreateQuestion extends React.Component {
                            type="text"
                            className="form-control"
                            id="correct-answer-input"
+                           onChange={(e) => {
+                              this.setCorrectAnswer(e);
+                           }}
                         />
                      </div>
-                     <div className="col-sm-2">
-                        <button
-                           className="btn-sm btn-primary btn-block mb-2"
-                           type="button"
-                           id="save-answer"
-                           onClick={() => this.saveCorrectAnswer()}
-                        >
-                           Save
-                        </button>
-                     </div>
                   </div>
-                  {/* change to Answer */}
-                  {this.state.question.incorrectAnswers.map((answer) => {
+
+                  {this.state.question.answers.map((answer) => {
                      return (
                         <Answer
                            key={answer.id}
@@ -156,10 +146,10 @@ class CreateQuestion extends React.Component {
                      );
                   })}
                   <div className="row">
-                     <div className="col-sm-12">
+                     <div className="col-12 mt-2">
                         <button
                            type="button"
-                           className="btn-lg btn-success"
+                           className="btn-sm btn-success"
                            onClick={() => {
                               this.setAnswerId();
                            }}

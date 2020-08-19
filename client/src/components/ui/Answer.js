@@ -10,15 +10,6 @@ export default class Answer extends React.Component {
       };
    }
 
-   saveAnswer() {
-      // get the text from the input
-      const text = document.getElementById(this.props.id).value;
-      console.log(text);
-      // add answer to the answers array inside of this.state.question
-      const incorrectAnswers = this.props.setAnswerText(this.props.id, text);
-      console.log(incorrectAnswers);
-   }
-
    // delete the input on the page
    deleteAnswer() {
       // remove current answer from the state of answerInputs
@@ -30,7 +21,7 @@ export default class Answer extends React.Component {
       return (
          <>
             {this.state.addNewAnswer && (
-               <div className="row">
+               <div className="row mt-2">
                   <div className="col-sm-3">
                      <label
                         htmlFor={this.props.id}
@@ -39,24 +30,21 @@ export default class Answer extends React.Component {
                         Incorrect Answer
                      </label>
                   </div>
-                  <div className="col-sm-5">
+                  <div className="col-sm-7">
                      <input
                         type="text"
                         className="form-control"
                         id={this.props.id}
                         defaultValue={this.props.defaultValue}
+                        onChange={(e) => {
+                           this.props.setAnswerText(
+                              this.props.id,
+                              e.target.value
+                           );
+                        }}
                      />
                   </div>
-                  <div className="col-sm-2">
-                     <button
-                        className="btn-sm btn-primary btn-block mb-2"
-                        type="button"
-                        id="save-answer"
-                        onClick={() => this.saveAnswer()}
-                     >
-                        Save
-                     </button>
-                  </div>
+
                   <div className="col-sm-2">
                      <button
                         className="btn-sm btn-danger btn-block mb-2"
